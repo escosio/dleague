@@ -1,27 +1,6 @@
 import unittest
 from venue_data import venue_distances,schedule,intl_games
-
-current_week = 2
-
-#  enter scores here
-weekly_plays = {
-    "Duncan": {
-        "team":"Philadelphia Eagles",
-        "yards": 0
-    },
-    "Evan": {
-        "team":"Carolina Panthers",
-        "yards": 0
-    },
-    "Phil": {
-        "team":"New York Giants",
-        "yards": 0
-    },
-    "Scott":{
-        "team":"Indianapolis Colts",
-        "yards": 0
-    }
-}
+from enter_scores import current_week,weekly_plays
 
 def is_international(week,team):
     is_international = bool()
