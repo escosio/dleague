@@ -62,6 +62,14 @@ venue_distances = {
     'Mexico City': {'venue':"Estadio Azteca",'distance':"2096.26"} 		
     }
 
+intl_games = {
+    "4":"London",
+    "5":"London",
+    "8":"London2",
+    "10":"Munich",
+    "11":"Mexico City"
+}
+
 # week, Away, Home
 schedule = [
     ['1', 'Buffalo Bills', 'Los Angeles Rams'],
@@ -337,3 +345,4 @@ schedule = [
     ['18', 'Los Angeles Chargers', 'Denver Broncos'],
     ['18', 'Tampa Bay Buccaneers', 'Atlanta Falcons']
 ]
+
