@@ -1,12 +1,13 @@
 import csv 
 
-def create_venue_dict():
-    csv_path = "dleague/venue_distances.csv"
+def create_penalty_dict():
+    csv_path = "venue_distances.csv"
     dict = {}
     with open(csv_path, newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            dict[row["team"]] = {"venue":row["venue"],"distance":row["distance"]}
+            # dict[row["team"]] = {"venue":row["venue"],"distance":row["distance"]}
+            dict[row["venue"]]= row["penalty"]
     return dict
 
 def get_schedule():
@@ -18,57 +19,43 @@ def get_schedule():
             row_data = list([row["Week"],row["Away"],row["Home"]])
             schedule.append(row_data)
     return schedule
+
 # to import from CSVs, hardcoded below
-# venue_distances = create_venue_dict()
+# venue_penalties = create_penalty_dict()
 # schedule = get_schedule()
 
-# converted dicts
-venue_distances = { 
-    'Pittsburgh Steelers': {'venue': 'Acrisure Stadium', 'distance': '311.46'},
-    'Las Vegas Raiders': {'venue': 'Allegiant Stadium', 'distance': '2228.14'},
-    'Kansas City Chiefs': {'venue': 'GEHA Field at Arrowhead Stadium', 'distance': '1084.81'},
-    'Dallas Cowboys': {'venue': 'AT&T Stadium', 'distance': '1384.49'},
-    'Carolina Panthers': {'venue': 'Bank of America Stadium', 'distance': '533.67'},
-    'New Orleans Saints': {'venue': 'Caesars Superdome', 'distance': '1169.6'},
-    'Denver Broncos': {'venue': 'Empower Field at Mile High', 'distance': '1623.2'},
-    'Washington Commanders': {'venue': 'FedExField', 'distance': '199.89'},
-    'Cleveland Browns': {'venue': 'FirstEnergy Stadium', 'distance': '398.23'},
-    'Detroit Lions': {'venue': 'Ford Field', 'distance': '474.07'},
-    'New England Patriots': {'venue': 'Gillette Stadium', 'distance': '170.5'},
-    'Miami Dolphins': {'venue': 'Hard Rock Stadium', 'distance': '1087.01'},
-    'Buffalo Bills': {'venue': 'Highmark Stadium', 'distance': '276.52'},
-    'Green Bay Packers': {'venue': 'Lambeau Field', 'distance': '752.46'},
-    'San Francisco 49ers': {'venue': "Levi's Stadium", 'distance': '2545.49'},
-    'Philadelphia Eagles': {'venue': 'Lincoln Financial Field', 'distance': '81.82'},
-    'Indianapolis Colts': {'venue': 'Lucas Oil Stadium', 'distance': '639.76'},
-    'Seattle Seahawks': {'venue': 'Lumen Field', 'distance': '2394.2'},
-    'Baltimore Ravens': {'venue': 'M&T Bank Stadium', 'distance': '171.39'},
-    'Atlanta Falcons': {'venue': 'Mercedes-Benz Stadium', 'distance': '747.35'},
-    'New York Giants': {'venue': 'MetLife Stadium', 'distance': '0'},
-    'New York Jets': {'venue': 'MetLife Stadium', 'distance': '0'},
-    'Tennessee Titans': {'venue': 'Nissan Stadium', 'distance': '756.56'},
-    'Houston Texans': {'venue': 'NRG Stadium', 'distance': '1421.72'},
-    'Cincinnati Bengals': {'venue': 'Paycor Stadium', 'distance': '563.45'},
-    'Tampa Bay Buccaneers': {'venue': 'Raymond James Stadium', 'distance': '998.2'},
-    'Los Angeles Rams': {'venue': 'SoFi Stadium', 'distance': '2448.1'},
-    'Los Angeles Chargers': {'venue': 'SoFi Stadium', 'distance': '2448.1'},
-    'Chicago Bears': {'venue': 'Soldier Field', 'distance': '704.37'},
-    'Arizona Cardinals': {'venue': 'State Farm Stadium', 'distance': '2142.88'},
-    'Jacksonville Jaguars': {'venue': 'TIAA Bank Field', 'distance': '841.57'},
-    'Minnesota Vikings': {'venue': 'U.S. Bank Stadium', 'distance': '1008.66'},
-    'London': {'venue':'Tottenham Hotspur Stadium', 'distance': '3460.09'},
-    'London2':	{'venue':"Wembley Stadium", 'distance':"3452.49"},
-    'Munich':	{'venue':"Allianz Arena",'distance':"4029.54"},	
-    'Mexico City': {'venue':"Estadio Azteca",'distance':"2096.26"} 		
-    }
-
-intl_games = {
-    "4":"London",
-    "5":"London",
-    "8":"London2",
-    "10":"Munich",
-    "11":"Mexico City"
-}
+venue_penalties = {
+    'Acrisure Stadium': '3.1146', 
+    'Allegiant Stadium': '22.2814', 
+    'GEHA Field at Arrowhead Stadium': '10.8481', 
+    'AT&T Stadium': '13.8449', 'Bank of America Stadium': '5.3367', 
+    'Caesars Superdome': '11.696', 
+    'Empower Field at Mile High': '16.232', 'FedExField': '1.9989', 
+    'FirstEnergy Stadium': '3.9823', 'Ford Field': '4.7407', 
+    'Gillette Stadium': '1.705', 
+    'Hard Rock Stadium': '10.8701', 
+    'Highmark Stadium': '2.7652', 
+    'Lambeau Field': '7.5246', 
+    "Levi's Stadium": '25.4549', 
+    'Lincoln Financial Field': '0.8182', 
+    'Lucas Oil Stadium': '6.3976', 
+    'Lumen Field': '23.942', 
+    'M&T Bank Stadium': '1.7139', 
+    'Mercedes-Benz Stadium': '7.4735', 
+    'MetLife Stadium': '0', 
+    'Nissan Stadium': '7.5656', 
+    'NRG Stadium': '14.2172', 
+    'Paycor Stadium': '5.6345', 
+    'Raymond James Stadium': '9.982', 
+    'SoFi Stadium': '24.481', 
+    'Soldier Field': '7.0437', 
+    'State Farm Stadium': '21.4288', 
+    'TIAA Bank Field': '8.4157', 
+    'U.S. Bank Stadium': '10.0866', 
+    'Tottenham Hotspur Stadium': '34.6009', 
+    'Wembley Stadium': '34.5249', 
+    'Allianz Arena': '40.2954', 
+    'Estadio Azteca': '20.9626'}
 
 # week, Away, Home
 schedule = [
@@ -345,4 +332,3 @@ schedule = [
     ['18', 'Los Angeles Chargers', 'Denver Broncos'],
     ['18', 'Tampa Bay Buccaneers', 'Atlanta Falcons']
 ]
-
