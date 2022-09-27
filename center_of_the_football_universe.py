@@ -27,6 +27,7 @@ def met_life(dict):
         if venue == 'MetLife Stadium':
             print(team)
 
+# don't need this anymore
 def is_international(week,team):
     is_international = bool()
     #  week 4 vikings saints
@@ -55,9 +56,12 @@ def get_penalty(team, yards, lookup_venue):
     print("penalty is", penalty)
     print("Week score:", round(yards - penalty, 2))
     
+def find_team(team, dict):
+    for key in dict:
+        if team in key:
+            return key
 
 if __name__ == '__main__':
-
     print("""\
         
                        ,,,,
@@ -75,10 +79,11 @@ if __name__ == '__main__':
     
     """)
     print("Welcome to the CENTER OF THE FOOTBALL UNIVERSE","\n")
-    home_games = get_venue_dict()
+    weekly_venues = get_venue_dict()
     for player in weekly_plays:
-        print(player, "plays", weekly_plays[player].get("team"))
-        get_penalty(weekly_plays[player].get("team"),weekly_plays[player].get("yards"),home_games)
+        team = find_team(weekly_plays[player].get("team"), weekly_venues)
+        print(player, "plays", team)
+        get_penalty(team, weekly_plays[player].get("yards"),weekly_venues)
         print("\n")
 
 
