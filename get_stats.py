@@ -31,10 +31,7 @@ def met_life(dict):
 team_locations = get_venue_dict()
 # print(team_locations)
 rushing = nfl.import_ngs_data("rushing", [2022])
-
-# print(rushing)
-rushing.at
-for x in rushing:
-    if x.loc[3] == 3:
-        print(x)
-    # print(x.get("week"))
+print(rushing.columns)
+week5 = rushing.loc[rushing['week'] == 5, ['team_abbr','player_display_name','player_position','rush_yards']]
+# week5['season','week'] = rushing['season','week']
+nyg = week5.loc[week5['team_abbr'] == 'NYG']

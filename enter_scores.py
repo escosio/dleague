@@ -1,21 +1,21 @@
 #  enter scores here
-current_week = 2
+# current_week = 5
 
 weekly_plays = {
     "Duncan": {
-        "team":"Bears",
-        "yards": 79
+        "team":"Packers",
+        "yards": 94
     },
     "Evan": {
         "team":"Lions",
-        "yards": 144
+        "yards": 94
     },
     "Phil": {
         "team":"Browns",
-        "yards": 167
+        "yards": 181
     },
     "Scott":{
         "team":"Giants",
-        "yards": 164
+        "yards": 88
     }
 }

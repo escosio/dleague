@@ -1,5 +1,5 @@
 from venue_data import venue_penalties
-from enter_scores import current_week,weekly_plays
+from enter_scores import weekly_plays
 
 import requests
 
