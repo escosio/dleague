@@ -42,6 +42,14 @@ def find_team(team, dict):
         if team in key:
             return key
 
+def get_bye_teams(): 
+    teams_on_bye = response.json()["week"]["teamsOnBye"]
+    print("Teams on BYE this week:")
+    for nested_item in teams_on_bye:
+        print(nested_item["displayName"])
+    print("\n")
+
+
 if __name__ == '__main__':
     print("""\
         
@@ -60,6 +68,7 @@ if __name__ == '__main__':
     
     """)
     print("Welcome to the CENTER OF THE FOOTBALL UNIVERSE","\n")
+    get_bye_teams()
     weekly_venues = get_venue_dict()
     for player in weekly_plays:
         team_name = str(weekly_plays[player].get("team"))
