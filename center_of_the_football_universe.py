@@ -1,29 +1,54 @@
 from venue_data import venue_penalties
 from enter_scores import weekly_plays
-
+import datetime
 import requests
 
-url = "http://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard"
+scorecard_api = "http://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard"
+summary_api="http://site.api.espn.com/apis/site/v2/sports/football/nfl/summary"
 
-payload={}
+payload= {}
 headers = {}
 
-response = requests.request("GET", url, headers=headers, data=payload)
+response = requests.request("GET", scorecard_api, headers=headers, data=payload)
 week = response.json()["week"]["number"]
 
+# stealing duncan's function
+def get_specific_week(week_number):
+    days = []
+    for days_forward in range(7):
+        day = (datetime.date(2022, 9, 8) + datetime.timedelta(days=(days_forward + (week_number-1)*7))).strftime('%Y%m%d')
+        days.append(day)
+    return days
+
 # create a dict of where a team is playing each given week
-def get_venue_dict():
+def get_venue_dict(week_searching=week):
     dict = {}
-    print("Week", week)
-    for game in range(0,16):
-        try:
-            teams = response.json()["events"][game]["name"].split(" at ")
-            venue = response.json()["events"][game]["competitions"][0]["venue"]["fullName"]
-            dict[teams[0]]=venue
-            dict[teams[1]]=venue
-        except:
-            pass
-    return dict 
+    print("Week", week_searching)
+    if week_searching == week:
+        for game in range(0,16):
+            try:
+                teams = response.json()["events"][game]["name"].split(" at ")
+                venue = response.json()["events"][game]["competitions"][0]["venue"]["fullName"]
+                dict[teams[0]]=venue
+                dict[teams[1]]=venue
+            except:
+                pass
+        return dict 
+    else:
+        print("Searching custom week")
+        dates = get_specific_week(week_searching)
+        for day in dates:
+            day_response = (requests.get(url=scorecard_api, params={'dates': str(day)}))
+            for game in range(16):
+                try:
+                    teams = day_response.json()["events"][game]["name"].split(" at ")
+                    venue = day_response.json()["events"][game]["competitions"][0]["venue"]["fullName"]
+                    dict[teams[0]]=venue
+                    dict[teams[1]]=venue
+                except:
+                    break
+        return dict
+
 
 def met_life(dict):
     for team,venue in dict.items():
@@ -49,7 +74,6 @@ def get_bye_teams():
         print(nested_item["displayName"])
     print("\n")
 
-
 if __name__ == '__main__':
     print("""\
         
@@ -69,7 +93,8 @@ if __name__ == '__main__':
     """)
     print("Welcome to the CENTER OF THE FOOTBALL UNIVERSE","\n")
     get_bye_teams()
-    weekly_venues = get_venue_dict()
+    # weekly_venues = get_venue_dict()
+    weekly_venues = get_venue_dict(week_searching=8)
     for player in weekly_plays:
         team_name = str(weekly_plays[player].get("team"))
         team = find_team(team_name.title(), weekly_venues)
