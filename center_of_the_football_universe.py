@@ -12,6 +12,9 @@ headers = {}
 response = requests.request("GET", scorecard_api, headers=headers, data=payload)
 week = response.json()["week"]["number"]
 
+dleague_teams = [weekly_plays[player].get('team').title() for player in weekly_plays]
+
+
 # stealing duncan's function
 def get_specific_week(week_number):
     days = []
@@ -20,59 +23,44 @@ def get_specific_week(week_number):
         days.append(day)
     return days
 
-# create a dict of where a team is playing each given week
-def get_venue_dict(week_searching=week):
-    dict = {}
-    print("Week", week_searching)
-    if week_searching == week:
-        for game in range(0,16):
-            try:
-                teams = response.json()["events"][game]["name"].split(" at ")
-                venue = response.json()["events"][game]["competitions"][0]["venue"]["fullName"]
-                dict[teams[0]]=venue
-                dict[teams[1]]=venue
-            except:
-                pass
-        return dict 
-    else:
-        print("Searching custom week")
-        dates = get_specific_week(week_searching)
-        for day in dates:
-            day_response = (requests.get(url=scorecard_api, params={'dates': str(day)}))
-            for game in range(16):
-                try:
-                    teams = day_response.json()["events"][game]["name"].split(" at ")
-                    venue = day_response.json()["events"][game]["competitions"][0]["venue"]["fullName"]
-                    dict[teams[0]]=venue
-                    dict[teams[1]]=venue
-                except:
-                    break
-        return dict
+# get home, away and venue in one fell swoop
+def get_game_info():
+    games = {}
+    for game in range(0,16):
+        try:
+            teams = response.json()["events"][game]["name"].split(" at ")
+            venue = response.json()["events"][game]["competitions"][0]["venue"]["fullName"]
+            id = response.json()["events"][game]["id"]
+            # could only return ids for games with teams but needs more work
+            # if teams[0] in dleague_teams or teams[1] in dleague_teams:
+            games[id]= {
+                "away": teams[0],
+                "home": teams[1],
+                "venue": venue
+                }
+        except:
+            break
+    return games
 
-
-def met_life(dict):
-    for team,venue in dict.items():
-        if venue == 'MetLife Stadium':
-            print(team)
-
-def get_penalty(team_name, yards, lookup_venue):
-    venue = lookup_venue[team_name]
+def get_penalty(team_name, yards, venue):
     penalty = float(venue_penalties[venue])
     print("The ", team_name, "are playing at", venue, "and the penalty is", penalty)
-    # print("penalty is", penalty)
     print("Week score:", round(yards - penalty, 2))
-    
-def find_team(team, dict):
-    for key in dict:
-        if team in key:
-            return key
 
-def get_bye_teams(): 
-    teams_on_bye = response.json()["week"]["teamsOnBye"]
-    print("Teams on BYE this week:")
-    for nested_item in teams_on_bye:
-        print(nested_item["displayName"])
-    print("\n")
+# to lookup the team using the keyword 
+def find_team(team, dict):
+    try:
+        for key in dict:
+            if team in dict[key].get("away"):
+                team_name = dict[key].get("away")
+                venue = dict[key].get("venue")
+                return team_name, venue
+            elif team in dict[key].get("home"):
+                team_name = dict[key].get("home")
+                venue = dict[key].get("venue")
+                return team_name, venue
+    except:
+        pass
 
 if __name__ == '__main__':
     print("""\
@@ -92,17 +80,14 @@ if __name__ == '__main__':
     
     """)
     print("Welcome to the CENTER OF THE FOOTBALL UNIVERSE","\n")
-    get_bye_teams()
-    # weekly_venues = get_venue_dict()
-    weekly_venues = get_venue_dict(week_searching=8)
-    for player in weekly_plays:
-        team_name = str(weekly_plays[player].get("team"))
-        team = find_team(team_name.title(), weekly_venues)
-        print(player, "plays", team_name)
-        if team in list(weekly_venues.keys()):
-            get_penalty(team, weekly_plays[player].get("yards"),weekly_venues)
-            print("\n")
-        else:
-            print(f"Could not find a game for the {team_name} this week. Do they have a bye?", '\n')
-
+    game_dict = get_game_info()
+    for dleaguer in weekly_plays:
+        try:
+            info = find_team(weekly_plays[dleaguer].get("team").title(), game_dict)
+            team = info[0]
+            venue = info[1]
+            yards = weekly_plays[dleaguer].get("yards")
+            get_penalty(team, yards, venue)
+        except:
+            print(weekly_plays[dleaguer].get("team").title(), "could not be found, BYE week?")
 
