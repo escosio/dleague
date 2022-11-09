@@ -14,7 +14,6 @@ week = response.json()["week"]["number"]
 
 dleague_teams = [weekly_plays[player].get('team').title() for player in weekly_plays]
 
-
 # stealing duncan's function
 def get_specific_week(week_number):
     days = []
@@ -62,6 +61,18 @@ def find_team(team, dict):
     except:
         pass
 
+def find_dleague_teams():
+    for dleaguer in weekly_plays:
+        try:
+            info = find_team(weekly_plays[dleaguer].get("team").title(), game_dict)
+            team = info[0]
+            venue = info[1]
+            yards = weekly_plays[dleaguer].get("yards")
+            get_penalty(team, yards, venue)
+        except:
+            # print(weekly_plays[dleaguer].get("team").title(), "could not be found, BYE week?")
+            pass
+
 if __name__ == '__main__':
     print("""\
         
@@ -89,5 +100,6 @@ if __name__ == '__main__':
             yards = weekly_plays[dleaguer].get("yards")
             get_penalty(team, yards, venue)
         except:
-            print(weekly_plays[dleaguer].get("team").title(), "could not be found, BYE week?")
+            # print(weekly_plays[dleaguer].get("team").title(), "could not be found, BYE week?")
+            pass
 
