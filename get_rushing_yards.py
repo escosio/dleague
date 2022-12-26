@@ -74,3 +74,5 @@ def get_relevant_game_ids(dleague_teams):
 game_ids = get_relevant_game_ids(dleague_teams)
 for id in game_ids:
     get_game_rushing(id, game_ids[id].get("home_game"))
+
+# get_game_rushing(401437852, True)

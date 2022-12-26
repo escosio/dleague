@@ -43,8 +43,8 @@ def get_game_info():
 
 def get_penalty(team_name, yards, venue):
     penalty = float(venue_penalties[venue])
-    print("The ", team_name, "are playing at", venue, "and the penalty is", penalty)
-    print("Week score:", round(yards - penalty, 2))
+    print("The", team_name, "are playing at", venue, "and the penalty is", penalty)
+    print(f"{team_name} score:", round(yards - penalty, 2))
 
 # to lookup the team using the keyword 
 def find_team(team, dict):
@@ -91,6 +91,7 @@ if __name__ == '__main__':
     
     """)
     print("Welcome to the CENTER OF THE FOOTBALL UNIVERSE","\n")
+    print('Current week: ', week)
     game_dict = get_game_info()
     for dleaguer in weekly_plays:
         try:

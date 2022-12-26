@@ -3,19 +3,19 @@
 
 weekly_plays = {
     "Duncan": {
-        "team":"Vikings",
-        "yards": 0
+        "team":"Giants",
+        "yards": 92
     },
     "Evan": {
         "team":"Lions",
-        "yards": 0
+        "yards": 30
     },
     "Phil": {
         "team":"Browns",
-        "yards": 0
+        "yards": 100
     },
     "Scott":{
-        "team":"Bears",
-        "yards": 0
+        "team":"Cowboys",
+        "yards": 74
     }
 }
